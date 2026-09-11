@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Money Diary - Transactions</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 10% 20%,
+                    rgba(255,255,255,0.85) 0%,
+                    rgba(255,255,255,0) 25%
+                ),
+                radial-gradient(
+                    circle at 90% 10%,
+                    rgba(255,255,255,0.75) 0%,
+                    rgba(255,255,255,0) 25%
+                ),
+                linear-gradient(
+                    135deg,
+                    #dff4ff 0%,
+                    #d9eaff 25%,
+                    #e9ddff 50%,
+                    #f8dff0 75%,
+                    #dcecff 100%
+                );
+
+            padding: 30px 20px;
+            color: #39334f;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .top-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 15px;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #4a3f7a;
+        }
+
+        .back-button {
+            text-decoration: none;
+            background: rgba(255,255,255,0.8);
+            color: #6559a8;
+            padding: 11px 18px;
+            border-radius: 12px;
+            font-weight: bold;
+            border: 1px solid rgba(255,255,255,0.8);
+            transition: 0.2s;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* FILTER BOX */
+
+        .filter-card {
+            background: rgba(255,255,255,0.82);
+            backdrop-filter: blur(15px);
+
+            padding: 22px;
+            border-radius: 20px;
+
+            border: 1px solid rgba(255,255,255,0.8);
+
+            box-shadow:
+                0 15px 40px rgba(100,90,160,0.12);
+
+            margin-bottom: 25px;
+        }
+
+        .filter-title {
+            font-size: 19px;
+            font-weight: bold;
+            color: #4a3f7a;
+            margin-bottom: 15px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            color: #625b7c;
+            margin-bottom: 7px;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            width: 100%;
+            padding: 12px;
+
+            border: 1px solid #d9d5e8;
+            background: rgba(255,255,255,0.85);
+
+            border-radius: 11px;
+            font-size: 14px;
+
+            outline: none;
+            color: #39334f;
+        }
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            border-color: #8b82d8;
+
+            box-shadow:
+                0 0 0 3px rgba(139,130,216,0.12);
+        }
+
+        .clear-button {
+            padding: 12px 16px;
+            border: none;
+            border-radius: 11px;
+
+            background: #eee8ff;
+            color: #6658a7;
+
+            font-weight: bold;
+            cursor: pointer;
+
+            white-space: nowrap;
+        }
+
+        .clear-button:hover {
+            background: #e3dbff;
+        }
+
+        /* TRANSACTIONS */
+
+        .transactions-card {
+            background: rgba(255,255,255,0.82);
+            backdrop-filter: blur(15px);
+
+            padding: 25px;
+            border-radius: 22px;
+
+            border: 1px solid rgba(255,255,255,0.8);
+
+            box-shadow:
+                0 15px 40px rgba(100,90,160,0.12);
+        }
+
+        .transaction {
+            background: rgba(255,255,255,0.72);
+
+            padding: 18px;
+            border-radius: 16px;
+
+            margin-bottom: 14px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 15px;
+
+            border: 1px solid rgba(225,220,240,0.8);
+
+            transition: 0.2s;
+        }
+
+        .transaction:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(100,90,160,0.08);
+        }
+
+        .transaction-info {
+            flex: 1;
+        }
+
+        .transaction-type {
+            font-size: 17px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .income {
+            color: #4b9b73;
+        }
+
+        .expense {
+            color: #c76d8b;
+        }
+
+        .transaction-details {
+            color: #777292;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .transaction-amount {
+            font-size: 18px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .income-amount {
+            color: #438b68;
+        }
+
+        .expense-amount {
+            color: #c45f82;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .edit-button,
+        .delete-button {
+            padding: 9px 13px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        .edit-button {
+            background: #eee8ff;
+            color: #6658a7;
+        }
+
+        .edit-button:hover {
+            background: #e2d9ff;
+        }
+
+        .delete-button {
+            background: #ffe5ed;
+            color: #b65373;
+        }
+
+        .delete-button:hover {
+            background: #ffd6e2;
+        }
+
+        .no-transactions {
+            text-align: center;
+            padding: 40px 20px;
+            color: #777292;
+            font-size: 16px;
+        }
+
+        .no-results {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            color: #777292;
+            font-weight: bold;
+        }
+
+        @media (max-width: 850px) {
+            .filter-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .clear-button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .top-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .title {
+                font-size: 27px;
+            }
+
+            .back-button {
+                text-align: center;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .transaction {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .transaction-amount {
+                margin-top: 5px;
+            }
+
+            .action-buttons {
+                width: 100%;
+            }
+
+            .edit-button,
+            .delete-button {
+                flex: 1;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="top-section">
+
+        <div class="title">
+            💰 Transactions
+        </div>
+
+        <a href="/dashboard" class="back-button">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- FILTERS -->
+
+    <div class="filter-card">
+
+        <div class="filter-title">
+            🔎 Find a Transaction
+        </div>
+
+        <div class="filter-grid">
+
+            <div class="filter-group">
+                <label>Search</label>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search category or description..."
+                >
+            </div>
+
+
+            <div class="filter-group">
+                <label>From Date</label>
+
+                <input
+                    type="date"
+                    id="fromDate"
+                >
+            </div>
+
+
+            <div class="filter-group">
+                <label>To Date</label>
+
+                <input
+                    type="date"
+                    id="toDate"
+                >
+            </div>
+
+
+            <div class="filter-group">
+                <label>Type</label>
+
+                <select id="typeFilter">
+
+                    <option value="all">
+                        All
+                    </option>
+
+                    <option value="Income">
+                        Income
+                    </option>
+
+                    <option value="Expense">
+                        Expense
+                    </option>
+
+                </select>
+            </div>
+
+
+            <button
+                type="button"
+                class="clear-button"
+                onclick="clearFilters()"
+            >
+                🔄 Clear
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- TRANSACTIONS -->
+
+    <div class="transactions-card">
+
+        {% if transactions %}
+
+            <div id="transactionList">
+
+                {% for transaction in transactions %}
+
+                    <div
+                        class="transaction"
+                        data-date="{{ transaction[3] }}"
+                        data-type="{{ transaction[1] }}"
+                        data-search="{{ transaction[2] }} {{ transaction[4] or '' }}"
+                    >
+
+                        <div class="transaction-info">
+
+                            <div
+                                class="transaction-type
+                                {% if transaction[1] == 'Income' %}
+                                    income
+                                {% else %}
+                                    expense
+                                {% endif %}"
+                            >
+
+                                {% if transaction[1] == "Income" %}
+                                    💚 Income
+                                {% else %}
+                                    💗 Expense
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="transaction-details">
+
+                                📅 {{ transaction[3] }}
+
+                                <br>
+
+                                🏷️ {{ transaction[2] }}
+
+                                <br>
+
+                                📝 {{ transaction[4] or "No description" }}
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="transaction-amount
+                            {% if transaction[1] == 'Income' %}
+                                income-amount
+                            {% else %}
+                                expense-amount
+                            {% endif %}
+                        ">
+
+                            {% if transaction[1] == "Income" %}
+
+                                + ₹{{ "%.2f"|format(transaction[5]) }}
+
+                            {% else %}
+
+                                - ₹{{ "%.2f"|format(transaction[5]) }}
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="action-buttons">
+
+                            <a
+                                href="/edit-transaction/{{ transaction[0] }}"
+                                class="edit-button"
+                            >
+                                ✏️ Edit
+                            </a>
+
+
+                            <form
+                                method="POST"
+                                action="/delete-transaction/{{ transaction[0] }}"
+                                onsubmit="return confirm('Are you sure you want to delete this transaction?');"
+                            >
+
+                                <button
+                                    type="submit"
+                                    class="delete-button"
+                                >
+                                    🗑️ Delete
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <div
+                id="noResults"
+                class="no-results"
+            >
+                🔍 No transactions match your filters.
+            </div>
+
+
+        {% else %}
+
+            <div class="no-transactions">
+                📭 No transactions found.
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<script>
+
+    const searchInput = document.getElementById("searchInput");
+    const fromDate = document.getElementById("fromDate");
+    const toDate = document.getElementById("toDate");
+    const typeFilter = document.getElementById("typeFilter");
+
+    function filterTransactions() {
+
+        const searchText =
+            searchInput.value.toLowerCase().trim();
+
+        const from =
+            fromDate.value;
+
+        const to =
+            toDate.value;
+
+        const selectedType =
+            typeFilter.value;
+
+        const transactions =
+            document.querySelectorAll(".transaction");
+
+        let visibleCount = 0;
+
+
+        transactions.forEach(function(transaction) {
+
+            const transactionDate =
+                transaction.dataset.date;
+
+            const transactionType =
+                transaction.dataset.type;
+
+            const searchData =
+                transaction.dataset.search.toLowerCase();
+
+
+            let matchesSearch =
+                searchData.includes(searchText);
+
+
+            let matchesFromDate =
+                !from || transactionDate >= from;
+
+
+            let matchesToDate =
+                !to || transactionDate <= to;
+
+
+            let matchesType =
+                selectedType === "all" ||
+                transactionType === selectedType;
+
+
+            if (
+                matchesSearch &&
+                matchesFromDate &&
+                matchesToDate &&
+                matchesType
+            ) {
+
+                transaction.style.display = "flex";
+
+                visibleCount++;
+
+            } else {
+
+                transaction.style.display = "none";
+
+            }
+
+        });
+
+
+        const noResults =
+            document.getElementById("noResults");
+
+
+        if (noResults) {
+
+            if (visibleCount === 0) {
+                noResults.style.display = "block";
+            } else {
+                noResults.style.display = "none";
+            }
+
+        }
+
+    }
+
+
+    function clearFilters() {
+
+        searchInput.value = "";
+        fromDate.value = "";
+        toDate.value = "";
+        typeFilter.value = "all";
+
+        filterTransactions();
+
+    }
+
+
+    searchInput.addEventListener(
+        "input",
+        filterTransactions
+    );
+
+    fromDate.addEventListener(
+        "change",
+        filterTransactions
+    );
+
+    toDate.addEventListener(
+        "change",
+        filterTransactions
+    );
+
+    typeFilter.addEventListener(
+        "change",
+        filterTransactions
+    );
+
+</script>
+
+</body>
+</html>

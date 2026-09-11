@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Money Diary - Dashboard</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            font-family: Arial, sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 10% 20%,
+                    rgba(255,255,255,0.85) 0%,
+                    rgba(255,255,255,0) 25%
+                ),
+                radial-gradient(
+                    circle at 90% 10%,
+                    rgba(255,255,255,0.75) 0%,
+                    rgba(255,255,255,0) 25%
+                ),
+                linear-gradient(
+                    135deg,
+                    #dff4ff 0%,
+                    #d9eaff 25%,
+                    #e9ddff 50%,
+                    #f8dff0 75%,
+                    #dcecff 100%
+                );
+
+            color: #403b58;
+        }
+
+
+        .container {
+
+            width: 100%;
+
+            max-width: 1100px;
+
+            margin: auto;
+
+            padding: 30px 20px 50px;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 30px;
+        }
+
+
+        .logo {
+
+            font-size: 30px;
+
+            font-weight: bold;
+
+            color: #4a3f7a;
+        }
+
+
+        .logout-button {
+
+            text-decoration: none;
+
+            color: #6f62ad;
+
+            background: rgba(255,255,255,0.65);
+
+            padding: 10px 18px;
+
+            border-radius: 12px;
+
+            font-weight: bold;
+
+            transition: 0.2s;
+        }
+
+
+        .logout-button:hover {
+
+            background: white;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =========================
+           WELCOME
+        ========================= */
+
+        .welcome {
+
+            text-align: center;
+
+            margin-bottom: 25px;
+        }
+
+
+        .welcome h1 {
+
+            margin: 0;
+
+            color: #4a3f7a;
+
+            font-size: 30px;
+        }
+
+
+        .welcome p {
+
+            margin-top: 8px;
+
+            color: #777292;
+        }
+
+
+        /* =========================
+           BALANCE
+        ========================= */
+
+        .balance-card {
+
+            background: rgba(255,255,255,0.78);
+
+            border-radius: 25px;
+
+            padding: 35px;
+
+            text-align: center;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 15px 35px rgba(100,90,160,0.12);
+        }
+
+
+        .balance-label {
+
+            color: #777292;
+
+            font-size: 16px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .balance-amount {
+
+            font-size: 42px;
+
+            font-weight: bold;
+
+            color: #4a3f7a;
+        }
+
+
+        /* =========================
+           SUMMARY
+        ========================= */
+
+        .summary-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .summary-card {
+
+            background: rgba(255,255,255,0.72);
+
+            border-radius: 20px;
+
+            padding: 25px;
+
+            text-align: center;
+
+            box-shadow:
+                0 12px 30px rgba(100,90,160,0.10);
+        }
+
+
+        .summary-card h3 {
+
+            margin: 0 0 10px;
+
+            color: #777292;
+
+            font-size: 15px;
+        }
+
+
+        .summary-card p {
+
+            margin: 0;
+
+            font-size: 28px;
+
+            font-weight: bold;
+        }
+
+
+        .income {
+
+            color: #4b9b78;
+        }
+
+
+        .expense {
+
+            color: #c06b8a;
+        }
+
+
+        /* =========================
+           MAIN BUTTONS
+        ========================= */
+
+        .button-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 30px;
+        }
+
+
+        .main-button {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            min-height: 58px;
+
+            text-decoration: none;
+
+            border-radius: 15px;
+
+            font-weight: bold;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6f72d8,
+                    #9b72d8
+                );
+
+            box-shadow:
+                0 8px 20px rgba(105,100,190,0.20);
+
+            transition: 0.2s;
+        }
+
+
+        .main-button:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 12px 25px rgba(105,100,190,0.28);
+        }
+
+
+        .report-button {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7b83d9,
+                    #b07bd3
+                );
+        }
+
+
+        /* =========================
+           SECTION
+        ========================= */
+
+        .section {
+
+            background: rgba(255,255,255,0.72);
+
+            border-radius: 22px;
+
+            padding: 25px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 12px 30px rgba(100,90,160,0.10);
+        }
+
+
+        .section h2 {
+
+            margin-top: 0;
+
+            color: #4a3f7a;
+
+            font-size: 21px;
+        }
+
+
+        /* =========================
+           RECENT TRANSACTIONS
+        ========================= */
+
+        .transaction {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            padding: 15px;
+
+            margin-bottom: 10px;
+
+            background: rgba(255,255,255,0.60);
+
+            border-radius: 14px;
+        }
+
+
+        .transaction:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        .transaction-info {
+
+            min-width: 0;
+        }
+
+
+        .transaction-category {
+
+            font-weight: bold;
+
+            color: #4a3f7a;
+        }
+
+
+        .transaction-description {
+
+            margin-top: 4px;
+
+            font-size: 13px;
+
+            color: #777292;
+
+            word-break: break-word;
+        }
+
+
+        .transaction-date {
+
+            margin-top: 4px;
+
+            font-size: 12px;
+
+            color: #9992aa;
+        }
+
+
+        .transaction-amount {
+
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+
+        .income-amount {
+
+            color: #4b9b78;
+        }
+
+
+        .expense-amount {
+
+            color: #c06b8a;
+        }
+
+
+        .no-data {
+
+            text-align: center;
+
+            padding: 20px;
+
+            color: #88829b;
+        }
+
+
+        /* =========================
+           SPENDING OVERVIEW
+        ========================= */
+
+        .category-item {
+
+            margin-bottom: 20px;
+        }
+
+
+        .category-item:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        .category-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 7px;
+        }
+
+
+        .category-name {
+
+            font-weight: bold;
+
+            color: #55506b;
+        }
+
+
+        .category-amount {
+
+            color: #c06b8a;
+
+            font-weight: bold;
+        }
+
+
+        .bar-background {
+
+            width: 100%;
+
+            height: 10px;
+
+            background: rgba(210,205,230,0.45);
+
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+
+        .bar {
+
+            width: 0;
+
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #8b82d8,
+                    #c48bc8
+                );
+
+            border-radius: 10px;
+
+            transition: width 0.5s ease;
+        }
+
+
+        /* =========================
+           VIEW ALL
+        ========================= */
+
+        .view-all {
+
+            display: block;
+
+            text-align: center;
+
+            margin-top: 18px;
+
+            text-decoration: none;
+
+            color: #7567c9;
+
+            font-weight: bold;
+        }
+
+
+        .view-all:hover {
+
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .button-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .container {
+
+                padding: 20px 15px 40px;
+            }
+
+
+            .header {
+
+                align-items: flex-start;
+            }
+
+
+            .logo {
+
+                font-size: 25px;
+            }
+
+
+            .welcome h1 {
+
+                font-size: 25px;
+            }
+
+
+            .balance-card {
+
+                padding: 28px 20px;
+            }
+
+
+            .balance-amount {
+
+                font-size: 34px;
+            }
+
+
+            .summary-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .button-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .transaction {
+
+                align-items: flex-start;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <div class="header">
+
+        <div class="logo">
+            💰 Money Diary
+        </div>
+
+
+        <a
+            href="/logout"
+            class="logout-button"
+        >
+            Logout
+        </a>
+
+    </div>
+
+
+    <!-- =========================
+         WELCOME
+    ========================= -->
+
+    <div class="welcome">
+
+        <h1>
+            Welcome, {{ user_name }} 👋
+        </h1>
+
+
+        <p>
+            Keep track of your money with ease ✨
+        </p>
+
+    </div>
+
+
+    <!-- =========================
+         BALANCE
+    ========================= -->
+
+    <div class="balance-card">
+
+        <div class="balance-label">
+            Current Balance
+        </div>
+
+
+        <div class="balance-amount">
+            ₹{{ "%.2f"|format(balance|float) }}
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         INCOME / EXPENSE
+    ========================= -->
+
+    <div class="summary-grid">
+
+
+        <div class="summary-card">
+
+            <h3>
+                Total Income
+            </h3>
+
+
+            <p class="income">
+                ₹{{ "%.2f"|format(total_income|float) }}
+            </p>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <h3>
+                Total Expenses
+            </h3>
+
+
+            <p class="expense">
+                ₹{{ "%.2f"|format(total_expenses|float) }}
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =========================
+         ACTION BUTTONS
+    ========================= -->
+
+    <div class="button-grid">
+
+
+        <a
+            href="/add-income"
+            class="main-button"
+        >
+            💰 Add Income
+        </a>
+
+
+        <a
+            href="/add-expense"
+            class="main-button"
+        >
+            💸 Add Expense
+        </a>
+
+
+        <a
+            href="/transactions"
+            class="main-button"
+        >
+            📋 Transactions
+        </a>
+
+
+        <a
+            href="/reports"
+            class="main-button report-button"
+        >
+            📊 Monthly Report
+        </a>
+
+
+    </div>
+
+
+    <!-- =========================
+         RECENT TRANSACTIONS
+    ========================= -->
+
+    <div class="section">
+
+
+        <h2>
+            🧾 Recent Transactions
+        </h2>
+
+
+        {% if recent_transactions %}
+
+
+            {% for transaction in recent_transactions %}
+
+
+                <div class="transaction">
+
+
+                    <div class="transaction-info">
+
+
+                        <div class="transaction-category">
+                            {{ transaction[2] or "Uncategorized" }}
+                        </div>
+
+
+                        {% if transaction[4] %}
+
+                            <div class="transaction-description">
+                                {{ transaction[4] }}
+                            </div>
+
+                        {% endif %}
+
+
+                        <div class="transaction-date">
+                            {{ transaction[3] }}
+                        </div>
+
+
+                    </div>
+
+
+                    {% if transaction[0] == "Income" %}
+
+
+                        <div class="transaction-amount income-amount">
+
+                            + ₹{{ "%.2f"|format(transaction[1]|float) }}
+
+                        </div>
+
+
+                    {% else %}
+
+
+                        <div class="transaction-amount expense-amount">
+
+                            - ₹{{ "%.2f"|format(transaction[1]|float) }}
+
+                        </div>
+
+
+                    {% endif %}
+
+
+                </div>
+
+
+            {% endfor %}
+
+
+            <a
+                href="/transactions"
+                class="view-all"
+            >
+                View All Transactions →
+            </a>
+
+
+        {% else %}
+
+
+            <div class="no-data">
+                No transactions yet.
+            </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+    <!-- =========================
+         SPENDING OVERVIEW
+    ========================= -->
+
+    <div class="section">
+
+
+        <h2>
+            📊 Spending Overview
+        </h2>
+
+
+        {% if spending_chart %}
+
+
+            {% for item in spending_chart %}
+
+
+                <div class="category-item">
+
+
+                    <div class="category-header">
+
+
+                        <span class="category-name">
+                            {{ item[0] }}
+                        </span>
+
+
+                        <span class="category-amount">
+                            ₹{{ "%.2f"|format(item[1]|float) }}
+                        </span>
+
+
+                    </div>
+
+
+                    <div class="bar-background">
+
+
+                        <div
+                            class="bar"
+                            data-percentage="{{ item[2] }}"
+                        >
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            {% endfor %}
+
+
+        {% else %}
+
+
+            <div class="no-data">
+                No expense data available yet.
+            </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+    /* =========================
+       SPENDING BAR WIDTH
+    ========================= */
+
+
+    const spendingBars =
+        document.querySelectorAll(
+            ".bar[data-percentage]"
+        );
+
+
+    spendingBars.forEach(
+        function(bar) {
+
+
+            const percentage =
+                parseFloat(
+                    bar.dataset.percentage
+                );
+
+
+            if (!isNaN(percentage)) {
+
+
+                const safePercentage =
+                    Math.min(
+                        Math.max(
+                            percentage,
+                            0
+                        ),
+                        100
+                    );
+
+
+                bar.style.width =
+                    safePercentage + "%";
+
+
+            }
+
+
+        }
+    );
+
+
+</script>
+
+
+</body>
+
+</html>

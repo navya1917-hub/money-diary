@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Money Diary - Add Income</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            font-family: Arial, sans-serif;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background:
+                radial-gradient(
+                    circle at 10% 20%,
+                    rgba(255,255,255,0.85) 0%,
+                    rgba(255,255,255,0) 25%
+                ),
+
+                radial-gradient(
+                    circle at 90% 10%,
+                    rgba(255,255,255,0.75) 0%,
+                    rgba(255,255,255,0) 25%
+                ),
+
+                linear-gradient(
+                    135deg,
+                    #dff4ff 0%,
+                    #d9eaff 25%,
+                    #e9ddff 50%,
+                    #f8dff0 75%,
+                    #dcecff 100%
+                );
+        }
+
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+        }
+
+
+        .card {
+            background: rgba(255,255,255,0.82);
+
+            backdrop-filter: blur(15px);
+
+            padding: 40px;
+
+            border-radius: 24px;
+
+            border: 1px solid rgba(255,255,255,0.8);
+
+            box-shadow:
+                0 15px 40px rgba(100,90,160,0.15);
+        }
+
+
+        .logo {
+            text-align: center;
+
+            font-size: 32px;
+
+            font-weight: bold;
+
+            color: #4a3f7a;
+
+            margin-bottom: 8px;
+        }
+
+
+        .subtitle {
+            text-align: center;
+
+            color: #777292;
+
+            margin-bottom: 30px;
+        }
+
+
+        label {
+            display: block;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+
+            color: #4b4569;
+        }
+
+
+        input,
+        textarea {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border: 1px solid #d9d5e8;
+
+            background: rgba(255,255,255,0.85);
+
+            border-radius: 12px;
+
+            font-size: 16px;
+
+            outline: none;
+
+            margin-bottom: 20px;
+
+            color: #39334f;
+
+            font-family: Arial, sans-serif;
+        }
+
+
+        textarea {
+
+            min-height: 100px;
+
+            resize: vertical;
+        }
+
+
+        input:focus,
+        textarea:focus {
+
+            border-color: #8b82d8;
+
+            box-shadow:
+                0 0 0 3px rgba(139,130,216,0.12);
+        }
+
+
+        button {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6f72d8,
+                    #72b8d8
+                );
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 7px 18px rgba(105,100,190,0.25);
+
+            transition: 0.2s;
+        }
+
+
+        button:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 10px 23px rgba(105,100,190,0.32);
+        }
+
+
+        .back {
+
+            display: block;
+
+            text-align: center;
+
+            margin-top: 20px;
+
+            color: #7567c9;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+
+        .back:hover {
+
+            text-decoration: underline;
+        }
+
+
+        @media (max-width: 500px) {
+
+            .card {
+
+                padding: 30px 25px;
+            }
+
+
+            .logo {
+
+                font-size: 28px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <div class="card">
+
+
+        <div class="logo">
+
+            💰 Add Income
+
+        </div>
+
+
+        <div class="subtitle">
+
+            Record money you've received ✨
+
+        </div>
+
+
+        <form method="POST" action="/add-income">
+
+
+            <label>
+
+                Amount (₹)
+
+            </label>
+
+
+            <input
+                type="number"
+                name="amount"
+                step="0.01"
+                min="0"
+                placeholder="Enter amount"
+                required
+            >
+
+
+            <label>
+
+                Income Source
+
+            </label>
+
+
+            <input
+                type="text"
+                name="category"
+                placeholder="Example: Salary"
+                required
+            >
+
+
+            <label>
+
+                Date
+
+            </label>
+
+
+            <input
+                type="date"
+                name="date"
+                required
+            >
+
+
+            <label>
+
+                Description
+
+            </label>
+
+
+            <textarea
+                name="description"
+                placeholder="What was it for?"
+            ></textarea>
+
+
+            <button type="submit">
+
+                ➕ Add Income
+
+            </button>
+
+
+        </form>
+
+
+        <a href="/dashboard" class="back">
+
+            ← Back to Dashboard
+
+        </a>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>
